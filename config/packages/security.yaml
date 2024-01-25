@@ -1,0 +1,26 @@
+# config/packages/security.yaml
+parameters:
+    env(TRUSTED_IPS): '10.0.0.1, 10.0.0.2, 127.0.0.1'
+
+security:
+    # ...
+    access_control:
+        - { path: '^/fetchGitHubInformation', roles: ROLE_USER, ip: 127.0.0.1, port: 4200 }
+        - {path: '^/fetchGitHubInformation', 
+            allow_if: "request.getHost() == 'localhost'"}
+
+        - { path: '^/admin', roles: ROLE_USER_PORT, ip: 127.0.0.1, port: 8080 }
+        - { path: '^/admin', roles: ROLE_USER_IP, ip: 127.0.0.1 }
+        - { path: '^/admin', roles: ROLE_USER_HOST, host: symfony\.com$ }
+        - { path: '^/admin', roles: ROLE_USER_METHOD, methods: [POST, PUT] }
+
+        # ips can be comma-separated, which is especially useful when using env variables
+        - { path: '^/admin', roles: ROLE_USER_IP, ips: '%env(TRUSTED_IPS)%' }
+        - { path: '^/admin', roles: ROLE_USER_IP, ips: [127.0.0.1, ::1, '%env(TRUSTED_IPS)%'] }
+
+        # for custom matching needs, use a request matcher service
+        - { roles: ROLE_USER, request_matcher: App\Security\RequestMatcher\MyRequestMatcher }
+
+        # require ROLE_ADMIN for 'admin' route. You can use the shortcut "route: "xxx", instead of "attributes": ["_route": "xxx"]
+        - { attributes: {'_route': 'admin'}, roles: ROLE_ADMIN }
+        - { route: 'admin', roles: ROLE_ADMIN }
