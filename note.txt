@@ -1,0 +1,71 @@
+NOTE
+
+
+Hello Prasenjit,
+
+Thank you so much for meeting today, please see below the instructions for the test application
+
+Please use a markup editor to view it better.
+
+### Symfony Developer Application Test Instructions
+
+**Objective**:
+Develop a simple yet functionally-rich Angular+Symfony application showcasing your skills in UI development, network requests, and architectural design.
+
+**Application Overview**:
+A "User Post Viewer" application that fetches and displays posts and their authors from a public API, allowing users to view details and comments per post.
+
+### Feature Breakdown:
+
+1. **User List Screen**:
+   - Fetch and display a list of users from the placeholder API: https://jsonplaceholder.typicode.com/users
+   - Display basic user details (name, username, email).
+   - Tapping a user navigates to their post list.
+
+2. **User Posts Screen**:
+   - Display a list of posts for a selected user fetched from: https://jsonplaceholder.typicode.com/posts?userId={userId}
+   - Display post title and a snippet of the body.
+   - Tapping a post navigates to a detailed post view.
+
+3. **Post Details Screen**:
+   - Display the full detail of a post and its author.
+   - Fetch and display comments related to a post from: https://jsonplaceholder.typicode.com/comments?postId={postId}
+   - Display comment name, email, and body.
+ 
+### Technical Requirements:
+
+1. **UI/UX**:
+   - Implement a clean and user-friendly interface in Angular (Minimizing the use of packages and using your own code)
+ 
+2. **Networking**:
+   - Implement network request functionality to fetch data from the API - ensure that Angular reaches your API which in turns calls jsonplaceholder APIs.
+   - Handle possible network issues gracefully and inform the user accordingly.
+
+3. **Testing**:
+   - Include unit tests for your business logic.
+ 
+4. **Code Quality**:
+   - Ensure your code is clean, well-organized, and follows best practices.
+   - Include comments where necessary to explain your thought process.
+
+### Bonus Points (Optional):
+
+- **Pagination**: Implement pagination in the posts and comments lists.
+- **Favorites**: Allow users to favorite/unfavorite posts and persist this locally.
+- **Animations**: Add subtle animations to enhance user interactivity.
+
+### Submission Guidelines:
+
+- Share the source code via a GitHub repository, ensuring that README is well-detailed on how to set up and run the project.
+- Include a brief documentation about:
+   - The architecture of your application.
+   - Challenges faced (if any) and how you overcame them.
+
+### Evaluation:
+
+Your submission will be evaluated on the following criteria:
+- **Frequency** of the commits. Must be smaller and frequent commits.
+- **Functionality**: Ensuring all features are implemented as per instructions.
+- **Code Quality**: Adherence to Symfony best practices, code readability, and comments.
+- **Testing**: Adequate testing of logic.
+- **Documentation**: Clarity and comprehensiveness of your documentation.

@@ -13,37 +13,50 @@ class BlogController{
     }
 
     #[Route('/')]
-    public function homepage(): Response
-    {
-        return new Response('Post Listing Page');
-    }
-
-    #[Route('/details/{hello}')]
     public function details($hello = null): Response
     {
-        return new Response('Details page of '.$hello);
+		return new Response('Hello World');
     }
 
-    #[Route('/fetchGitHubInformation')]
-    public function fetchGitHubInformation()//: array
+	#[Route('/users')]
+    public function users(): Response
     {
-        //return new Response('fetchGitHubInformation');
-        
-        $response = $this->client->request(
+		$response = $this->client->request(
             'GET',
-            'https://api.github.com/repos/symfony/symfony-docs'
+            'https://jsonplaceholder.typicode.com/users'
         );
 
-        $statusCode = $response->getStatusCode();
+        // $statusCode = $response->getStatusCode();
         // $statusCode = 200
-        $contentType = $response->getHeaders()['content-type'][0];
+        // $contentType = $response->getHeaders()['content-type'][0];
         // $contentType = 'application/json'
-        $content = $response->getContent();
-        // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $content = $response->toArray();
-        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-
-        return new Response(json_encode($content));
+        // $content = $response->getContent();
         
+        $content = $response->toArray();
+        return new Response(json_encode($content));
+    }
+
+	#[Route('/users/{userId}/posts')]
+    public function posts($userId = null): Response
+    {
+		$response = $this->client->request(
+            'GET',
+            'https://jsonplaceholder.typicode.com/posts?userId='.$userId
+        );
+        
+        $content = $response->toArray();
+        return new Response(json_encode($content));
+    }
+	
+	#[Route('/posts/{postId}/comments')]
+    public function comments($postId = null): Response
+    {
+		$response = $this->client->request(
+            'GET',
+            'https://jsonplaceholder.typicode.com/comments?postId='.$postId
+        );
+        
+        $content = $response->toArray();
+        return new Response(json_encode($content));
     }
 }
