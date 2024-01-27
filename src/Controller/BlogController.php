@@ -7,10 +7,33 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BlogController{
     
+	private $apiHostUrl = 'https://jsonplaceholder.typicode.com';	
     public function __construct(private HttpClientInterface $client)
     {
-        
+
     }
+
+	private function fetchData($pageUrl){
+		$result = [];
+		try{
+			$response = $this->client->request(
+				'GET',
+				$this->apiHostUrl.'/'.$pageUrl
+			);
+
+			$result['statusCode']	= $response->getStatusCode();
+			$contentType			= $response->getHeaders()['content-type'][0];
+			$contentType			= explode(';', $contentType);
+			$result['contentType']	= $contentType[0];
+			$result['charset']		= explode('=', $contentType[1])[1];
+			$result['data'] 		= $response->toArray();
+		}
+		catch(\Exception $ex){
+			$result = ["statusCode"=>500, "contentType" => "application/json", "msg"=>"500 Server Error Occured"];
+		}
+
+		return $result;
+	}
 
     #[Route('/')]
     public function details($hello = null): Response
@@ -21,42 +44,26 @@ class BlogController{
 	#[Route('/users')]
     public function users(): Response
     {
-		$response = $this->client->request(
-            'GET',
-            'https://jsonplaceholder.typicode.com/users'
-        );
-
-        // $statusCode = $response->getStatusCode();
-        // $statusCode = 200
-        // $contentType = $response->getHeaders()['content-type'][0];
-        // $contentType = 'application/json'
-        // $content = $response->getContent();
-        
-        $content = $response->toArray();
-        return new Response(json_encode($content));
+		$result = $this->fetchData('users');
+		return new Response(json_encode($result));
     }
 
 	#[Route('/users/{userId}/posts')]
     public function posts($userId = null): Response
     {
-		$response = $this->client->request(
-            'GET',
-            'https://jsonplaceholder.typicode.com/posts?userId='.$userId
-        );
-        
-        $content = $response->toArray();
-        return new Response(json_encode($content));
+		$result = $this->fetchData('posts?userId='.$userId);
+		return new Response(json_encode($result));
     }
 	
 	#[Route('/posts/{postId}/comments')]
     public function comments($postId = null): Response
     {
-		$response = $this->client->request(
-            'GET',
-            'https://jsonplaceholder.typicode.com/comments?postId='.$postId
-        );
-        
-        $content = $response->toArray();
-        return new Response(json_encode($content));
+		$result = $this->fetchData('comments?postId='.$postId);
+		return new Response(json_encode($result));
     }
+
+
+
+
+
 }
